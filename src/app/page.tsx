@@ -2,12 +2,14 @@
 
 import { MOCK_TOKEN_ADDRESS, MOCK_USDC_ABI } from "@/abii/mock-usdc-abi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useAccount, useReadContracts } from "wagmi";
+import { useState } from "react";
+import { formatUnits, parseUnits } from "viem";
+import { useAccount, useReadContracts, useWriteContract } from "wagmi";
 
 export default function Home() {
-  const account = useAccount();
+  const { address, isConnected } = useAccount();
 
-  const { data } = useReadContracts({
+  const { data, isLoading } = useReadContracts({
     contracts: [
       {
         abi: MOCK_USDC_ABI,
@@ -28,19 +30,76 @@ export default function Home() {
         abi: MOCK_USDC_ABI,
         address: MOCK_TOKEN_ADDRESS,
         functionName: "balanceOf",
-        args: [account.address as `0x${string}`],
+        args: [address as `0x${string}`],
       },
     ],
   });
 
-  const name: any = data?.[0].result;
-  const symbol: any = data?.[1].result;
-  const decimals: any = data?.[2].result;
-  const balanceUser: any = data?.[3].result;
-  console.log("data", data);
-  console.log("name", name);
-  console.log("symbol", symbol);
-  console.log("decimals", decimals);
+  const name = data?.[0].result;
+  const symbol = data?.[1].result;
+  const decimals = data?.[2].result;
+  const balanceUser = data?.[3].result;
+
+  const BalanceUser = () => {
+    if (!isConnected) {
+      return <h1>Please connect your account!</h1>;
+    }
+
+    if (isLoading) {
+      return <p>Loading....</p>;
+    }
+
+    return (
+      <p>
+        balanceUser : {formatUnits(balanceUser || BigInt(0), decimals || 18)}
+      </p>
+    );
+  };
+
+  const MintComponent = () => {
+    const [userAddress, setUserAddress] = useState<string>("0x");
+    const [amount, setAmount] = useState<string>("0");
+
+    const { writeContract } = useWriteContract();
+
+    const funcionSubmit = () => {
+      writeContract({
+        abi: MOCK_USDC_ABI,
+        address: MOCK_TOKEN_ADDRESS,
+        functionName: "mint",
+        args: [
+          userAddress as `0x${string}`,
+          parseUnits(amount, decimals || 18),
+        ],
+      });
+    };
+
+    return (
+      <div className="bg-white text-black">
+        <div className="gap-2 justify-between">
+          <label>Address user</label>
+          <input
+            className="border-black border-2"
+            onChange={(e) => setUserAddress(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Amount</label>
+          <input
+            type="number"
+            className="border-black border-2"
+            onChange={(e) => setAmount(e.target.value)}
+          />
+        </div>
+        <button
+          className="bg-blue-400 text-black rounded-lg p-4"
+          onClick={funcionSubmit}
+        >
+          Mint~
+        </button>
+      </div>
+    );
+  };
 
   return (
     <div>
@@ -48,7 +107,9 @@ export default function Home() {
       <p>Token Name : {name}</p>
       <p>Symbol: {symbol}</p>
       <p>Decimals: {decimals}</p>
-      <p>balanceUser : {balanceUser}</p>
+      <BalanceUser />
+      <h1>~Mint~</h1>
+      <MintComponent />
     </div>
   );
 }
