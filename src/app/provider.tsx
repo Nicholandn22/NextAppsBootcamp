@@ -1,12 +1,12 @@
 'use client'
 
-import { config } from "@/app/config/config";
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import { WagmiProvider } from "wagmi";
 
 import '@rainbow-me/rainbowkit/styles.css';
+import { config } from "@/config/config";
 
 const queryClient = new QueryClient();
 

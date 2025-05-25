@@ -33,18 +33,22 @@ export default function Home() {
     ],
   });
 
-  const name = data?.[0].result;
-  const symbol = data?.[1].result;
-  const decimals = data?.[2].result;
-  const balanceUser = data?.[3].result;
+  const name: any = data?.[0].result;
+  const symbol: any = data?.[1].result;
+  const decimals: any = data?.[2].result;
+  const balanceUser: any = data?.[3].result;
+  console.log("data", data);
+  console.log("name", name);
+  console.log("symbol", symbol);
+  console.log("decimals", decimals);
 
   return (
     <div>
       <ConnectButton />
-      <p>Token Name : {String(name)}</p>
-      <p>Symbol: {String(symbol)}</p>
-      <p>Decimals: {String(decimals)}</p>
-      <p>balanceUser : {String(balanceUser)}</p>
+      <p>Token Name : {name}</p>
+      <p>Symbol: {symbol}</p>
+      <p>Decimals: {decimals}</p>
+      <p>balanceUser : {balanceUser}</p>
     </div>
   );
 }

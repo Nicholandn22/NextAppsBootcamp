@@ -1,6 +1,4 @@
 export const MOCK_USDC_ABI = [
-
-[
   { inputs: [], stateMutability: "nonpayable", type: "constructor" },
   {
     inputs: [
@@ -68,7 +66,12 @@ export const MOCK_USDC_ABI = [
   {
     anonymous: false,
     inputs: [
-      { indexed: true, internalType: "address", name: "from", type: "address" },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "from",
+        type: "address",
+      },
       { indexed: true, internalType: "address", name: "to", type: "address" },
       {
         indexed: false,
@@ -166,7 +169,6 @@ export const MOCK_USDC_ABI = [
     stateMutability: "nonpayable",
     type: "function",
   },
-]
-] as const ;
+] as const;
 
 export const MOCK_TOKEN_ADDRESS = "0xB6Df7f56e1dFF4073FD557500719A37232fC3337";
