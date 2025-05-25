@@ -168,3 +168,5 @@ export const MOCK_USDC_ABI = [
   },
 ]
 ] as const ;
+
+export const MOCK_TOKEN_ADDRESS = "0xB6Df7f56e1dFF4073FD557500719A37232fC3337";
