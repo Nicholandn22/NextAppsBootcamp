@@ -167,4 +167,4 @@ export const MOCK_USDC_ABI = [
     type: "function",
   },
 ]
-] as const;;
+] as const ;
